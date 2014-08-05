@@ -1,0 +1,27 @@
+{
+    "name": "maci/translator-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony MaciTranslatorBundle",
+    "keywords": ["Translator Generator", "translator", "maci", "bootstrap"],
+    "homepage": "https://github.com/maci1011/TranslatorBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Maci",
+            "email": "info@macister.com",
+            "homepage": "http://macister.com"
+        }
+    ],
+    "require": {
+    },
+    "require-dev": {
+    },
+    "suggest": {
+    },
+    "autoload": {
+        "psr-0": { "Maci\\TranslatorBundle": "" }
+    },
+    "target-dir": "Maci/TranslatorBundle",
+    "extra": {
+    }
+}

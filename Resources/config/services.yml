@@ -1,0 +1,23 @@
+parameters:
+#    maci_translator.example.class: Maci\TranslatorBundle\Example
+
+services:
+
+    maci_translator.twig_extension:
+        class: Maci\TranslatorBundle\Twig\TranslatorExtension
+        arguments: [@doctrine.orm.entity_manager]
+        tags:
+            - { name: twig.extension }
+
+    sonata.admin.maci_translator_language:
+        class: Maci\TranslatorBundle\Admin\LanguageAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Language" }
+        arguments:
+            - ~
+            - Maci\TranslatorBundle\Entity\Language
+            - ~
+        calls:
+            - [ setTranslationDomain, [MaciLanguageBundle]]
+
+

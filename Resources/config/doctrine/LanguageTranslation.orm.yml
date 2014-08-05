@@ -1,0 +1,16 @@
+
+Maci\TranslatorBundle\Entity\LanguageTranslation:
+  type: entity
+  table: maci_translator_language_translation
+  fields:
+    id:
+      type: bigint
+      id: true
+      generator:
+        strategy: AUTO
+    text:
+      type: text
+      nullable: true
+    locale:
+      type: string
+      length: 10

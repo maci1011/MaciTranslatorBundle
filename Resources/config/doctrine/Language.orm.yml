@@ -1,0 +1,14 @@
+
+Maci\TranslatorBundle\Entity\Language:
+    type:  entity
+    table: maci_translator_language
+    repositoryClass: Maci\TranslatorBundle\Repository\LanguageRepository
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        label:
+            type: string
+            length: 63
