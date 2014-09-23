@@ -1,6 +1,6 @@
 
 Maci\TranslatorBundle\Entity\Language:
-    type:  entity
+    type: entity
     table: maci_translator_language
     repositoryClass: Maci\TranslatorBundle\Repository\LanguageRepository
     id:
