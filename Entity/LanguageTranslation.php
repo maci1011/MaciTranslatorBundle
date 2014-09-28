@@ -9,31 +9,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LanguageTranslation implements \A2lix\I18nDoctrineBundle\Doctrine\Interfaces\OneLocaleInterface
 {
-    /**
-     * @var integer
-     */
-    private $id;
+    use \A2lix\I18nDoctrineBundle\Doctrine\ORM\Util\Translation;
 
     /**
      * @var string
      */
     private $text;
-
-    /**
-     * @var string
-     */
-    private $locale;
-
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * Set text
@@ -56,44 +37,5 @@ class LanguageTranslation implements \A2lix\I18nDoctrineBundle\Doctrine\Interfac
     public function getText()
     {
         return $this->text;
-    }
-
-    /**
-     * Set locale
-     *
-     * @param string $locale
-     * @return LanguageTranslation
-     */
-    public function setLocale($locale)
-    {
-        $this->locale = $locale;
-
-        return $this;
-    }
-
-    /**
-     * Get locale
-     *
-     * @return string 
-     */
-    public function getLocale()
-    {
-        return $this->locale;
-    }
-
-    /**
-     * A2lix Translations
-     */
-    protected $translatable;
-
-    public function getTranslatable()
-    {
-        return $this->translatable;
-    }
-
-    public function setTranslatable($translatable)
-    {
-        $this->translatable = $translatable;
-        return $this;
     }
 }

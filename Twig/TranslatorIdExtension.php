@@ -4,7 +4,7 @@ namespace Maci\TranslatorBundle\Twig;
 
 use Doctrine\ORM\EntityManager;
 
-class TranslatorExtension extends \Twig_Extension
+class TranslatorIdExtension extends \Twig_Extension
 {
 
     private $em;
@@ -20,27 +20,25 @@ class TranslatorExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('matra', array($this, 'translate')),
+            new \Twig_SimpleFilter('matraid', array($this, 'translate')),
         );
     }
 
-    public function translate($label, $default = null)
+    public function translate($label)
     {
-        $text = $label;
+        $id = 0;
         $item = $this->em->getRepository('MaciTranslatorBundle:Language')->findOneByLabel($label);
 
         if ( $item ) {
-            $text = $item->getText();
-        } elseif ($default) {
-            $text = $default;
+            $id = $item->getId();
         }
 
-        return $text;
+        return $id;
     }
 
     public function getName()
     {
-        return 'maci_translator_extension';
+        return 'maci_translatorid_extension';
     }
 }
 

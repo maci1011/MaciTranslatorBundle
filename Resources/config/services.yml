@@ -9,15 +9,15 @@ services:
         tags:
             - { name: twig.extension }
 
-    sonata.admin.maci_translator_language:
-        class: Maci\TranslatorBundle\Admin\LanguageAdmin
+    maci_translatorid.twig_extension:
+        class: Maci\TranslatorBundle\Twig\TranslatorIdExtension
+        arguments: [@doctrine.orm.entity_manager]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: "Content", label: "Language" }
-        arguments:
-            - ~
-            - Maci\TranslatorBundle\Entity\Language
-            - ~
-        calls:
-            - [ setTranslationDomain, [MaciLanguageBundle]]
+            - { name: twig.extension }
+
+    maci_translator.form.type.language:
+        class: Maci\TranslatorBundle\Form\Type\LanguageType
+        tags:
+            - { name: form.type, alias: language }
 
 
