@@ -78,6 +78,6 @@ class Language
      */
     public function __toString()
     {
-        return (string) $this->text();
+        return $this->label;
     }
 }
