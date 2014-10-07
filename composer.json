@@ -3,7 +3,7 @@
     "type": "symfony-bundle",
     "description": "Symfony MaciTranslatorBundle",
     "keywords": ["Translator Generator", "translator", "maci", "bootstrap"],
-    "homepage": "https://github.com/maci1011/TranslatorBundle",
+    "homepage": "https://github.com/maci1011/MaciTranslatorBundle",
     "license": "MIT",
     "authors": [
         {
