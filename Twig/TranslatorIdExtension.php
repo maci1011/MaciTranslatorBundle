@@ -26,14 +26,7 @@ class TranslatorIdExtension extends \Twig_Extension
 
     public function translate($label)
     {
-        $id = 0;
-        $item = $this->em->getRepository('MaciTranslatorBundle:Language')->findOneByLabel($label);
-
-        if ( $item ) {
-            $id = $item->getId();
-        }
-
-        return $id;
+        return $this->em->getRepository('MaciTranslatorBundle:Language')->getIdFromLabel($label);
     }
 
     public function getName()

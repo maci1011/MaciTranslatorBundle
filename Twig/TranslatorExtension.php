@@ -26,16 +26,7 @@ class TranslatorExtension extends \Twig_Extension
 
     public function translate($label, $default = null)
     {
-        $text = $label;
-        $item = $this->em->getRepository('MaciTranslatorBundle:Language')->findOneByLabel($label);
-
-        if ( $item ) {
-            $text = $item->getText();
-        } elseif ($default) {
-            $text = $default;
-        }
-
-        return $text;
+        return $this->em->getRepository('MaciTranslatorBundle:Language')->getTextFromLabel($label, $default);
     }
 
     public function getName()
