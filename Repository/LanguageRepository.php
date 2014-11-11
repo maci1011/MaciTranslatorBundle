@@ -27,8 +27,6 @@ class LanguageRepository extends EntityRepository
 
         if ( $item ) {
             $id = $item->getId();
-        } else {
-            return false;
         }
 
         return $id;
