@@ -11,7 +11,7 @@ class LanguageRepository extends EntityRepository
         $text = $label;
         $item = $this->_em->getRepository('MaciTranslatorBundle:Language')->findOneByLabel($label);
 
-        if ( $item ) {
+        if ( $item && strlen($item->getText()) ) {
             $text = $item->getText();
         } elseif ($default) {
             $text = $default;

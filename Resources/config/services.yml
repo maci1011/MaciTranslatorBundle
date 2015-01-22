@@ -3,13 +3,13 @@ services:
 
     maci_translator.twig_extension:
         class: Maci\TranslatorBundle\Twig\TranslatorExtension
-        arguments: [@doctrine.orm.entity_manager]
+        arguments: ["@doctrine.orm.entity_manager","@security.context","%locales%"]
         tags:
             - { name: twig.extension }
 
     maci_translatorid.twig_extension:
         class: Maci\TranslatorBundle\Twig\TranslatorIdExtension
-        arguments: [@doctrine.orm.entity_manager]
+        arguments: ["@doctrine.orm.entity_manager","@security.context"]
         tags:
             - { name: twig.extension }
 
