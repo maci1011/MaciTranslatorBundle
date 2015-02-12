@@ -2,22 +2,18 @@
 
 namespace Maci\TranslatorBundle\Twig;
 
-use Doctrine\ORM\EntityManager;
-use Symfony\Component\Security\Core\SecurityContext;
+use Maci\TranslatorBundle\Controller\TranslatorController;
 
 class TranslatorIdExtension extends \Twig_Extension
 {
-    private $em;
-
-    private $sc;
+    private $tc;
 
     /**
      * Constructor
      */
-    public function __construct(EntityManager $doctrine, SecurityContext $securityContext)
+    public function __construct(TranslatorController $tc)
     {
-        $this->em = $doctrine;
-        $this->sc = $securityContext;
+        $this->tc = $tc;
     }
 
     public function getFilters()
@@ -29,10 +25,7 @@ class TranslatorIdExtension extends \Twig_Extension
 
     public function translateid($label)
     {
-        if ($this->sc->isGranted('ROLE_ADMIN')) {
-            return $this->em->getRepository('MaciTranslatorBundle:Language')->getIdFromLabel($label);
-        }
-        return false;
+        return $this->tc->getId($label);
     }
 
     public function getName()

@@ -31,7 +31,7 @@ class LanguageType extends AbstractType
             ))
 			->add('label', 'hidden')
 			->add('reset', 'reset')
-			->add('send', 'submit')
+			->add('save', 'submit')
 		;
 	}
 
