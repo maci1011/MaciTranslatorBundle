@@ -56,6 +56,39 @@ class TranslatorController extends Controller
         return false;
     }
 
+    public function getLabel($name, $default = null)
+    {
+        if (!strlen($name) || is_numeric($name)) {
+            if (strlen($default)) {
+                $name = strtolower($default);
+                $name = str_replace(' ', '_', $name);
+            } else {
+                $name = 'label_' . rand(100000, 999999);
+            }
+        }
+        $label = 'form.' . $name;
+        if (!strlen($default)) {
+            $default = str_replace('_', ' ', $name);
+            $default = ucwords($default);
+        }
+        $item = $this->em->getRepository('MaciTranslatorBundle:Language')->findOneByLabel($label);
+        if (!$item) {
+            $item = new Language;
+            $item->setLabel($label);
+
+            foreach ($this->locales as $locale) {
+                $translation = new LanguageTranslation();
+                $translation->setText( $default );
+                $translation->setLocale( $locale );
+                $item->addTranslation($translation);
+            }
+
+            $this->em->persist($item);
+            $this->em->flush();
+        }
+        return $this->em->getRepository('MaciTranslatorBundle:Language')->getTextFromLabel($label, $default);
+    }
+
     public function getLocales()
     {
         return $this->locales;
