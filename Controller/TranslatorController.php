@@ -32,18 +32,7 @@ class TranslatorController extends Controller
     {
         $item = $this->em->getRepository('MaciTranslatorBundle:Language')->findOneByLabel($label);
         if (!$item) {
-            $item = new Language;
-            $item->setLabel($label);
-
-            foreach ($this->locales as $locale) {
-                $translation = new LanguageTranslation();
-                $translation->setText( $default );
-                $translation->setLocale( $locale );
-                $item->addTranslation($translation);
-            }
-
-            $this->em->persist($item);
-            $this->em->flush();
+            $this->createItem($label, $default);
         }
         return $this->em->getRepository('MaciTranslatorBundle:Language')->getTextFromLabel($label, $default);
     }
@@ -67,26 +56,28 @@ class TranslatorController extends Controller
             }
         }
         $label = 'form.' . $name;
-        if (!strlen($default)) {
-            $default = str_replace('_', ' ', $name);
-            $default = ucwords($default);
-        }
         $item = $this->em->getRepository('MaciTranslatorBundle:Language')->findOneByLabel($label);
         if (!$item) {
-            $item = new Language;
-            $item->setLabel($label);
-
-            foreach ($this->locales as $locale) {
-                $translation = new LanguageTranslation();
-                $translation->setText( $default );
-                $translation->setLocale( $locale );
-                $item->addTranslation($translation);
-            }
-
-            $this->em->persist($item);
-            $this->em->flush();
+            $this->createItem($label, $default);
         }
         return $this->em->getRepository('MaciTranslatorBundle:Language')->getTextFromLabel($label, $default);
+    }
+
+    public function createItem($label, $default)
+    {
+        $item = new Language;
+        $item->setLabel($label);
+        if (!strlen(trim($default))) {
+            $default = null;
+        }
+        foreach ($this->locales as $locale) {
+            $translation = new LanguageTranslation();
+            $translation->setText( $default );
+            $translation->setLocale( $locale );
+            $item->addTranslation($translation);
+        }
+        $this->em->persist($item);
+        $this->em->flush();
     }
 
     public function getLocales()
