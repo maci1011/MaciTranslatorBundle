@@ -52,7 +52,7 @@ class TranslatorController extends Controller
                 $name = strtolower($default);
                 $name = str_replace(' ', '_', $name);
             } else {
-                $name = 'label_' . rand(100000, 999999);
+                $name = 'label.' . rand(100000, 999999);
             }
         }
         $label = 'form.' . $name;
