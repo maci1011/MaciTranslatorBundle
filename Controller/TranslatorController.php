@@ -54,6 +54,9 @@ class TranslatorController extends Controller
             } else {
                 $name = 'label.' . rand(100000, 999999);
             }
+        } elseif (strpos('[', $name)) {
+            $name = str_replace('[', '.', $name);
+            $name = str_replace(']', '', $name);
         }
         $label = 'form.' . $name;
         $item = $this->em->getRepository('MaciTranslatorBundle:Language')->findOneByLabel($label);
