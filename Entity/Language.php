@@ -65,6 +65,11 @@ class Language
         return $this->label;
     }
 
+    public function getName()
+    {
+        return $this->label;
+    }
+
     /**
      * getName
      */

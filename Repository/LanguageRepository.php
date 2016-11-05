@@ -8,13 +8,11 @@ class LanguageRepository extends EntityRepository
 {
     public function getTextFromLabel($label, $default = null)
     {
-        $text = $label;
+        $text = $default;
         $item = $this->_em->getRepository('MaciTranslatorBundle:Language')->findOneByLabel($label);
 
-        if ( $item ) {
+        if ( $item && strlen($item->getText()) ) {
             $text = $item->getText();
-        } elseif ($default) {
-            $text = $default;
         }
 
         return $text;

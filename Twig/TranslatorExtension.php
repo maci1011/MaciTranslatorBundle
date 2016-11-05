@@ -2,19 +2,18 @@
 
 namespace Maci\TranslatorBundle\Twig;
 
-use Doctrine\ORM\EntityManager;
+use Maci\TranslatorBundle\Controller\TranslatorController;
 
 class TranslatorExtension extends \Twig_Extension
 {
-
-    private $em;
+    private $tc;
 
     /**
      * Constructor
      */
-    public function __construct(EntityManager $doctrine)
+    public function __construct(TranslatorController $tc)
     {
-    	$this->em = $doctrine;
+        $this->tc = $tc;
     }
 
     public function getFilters()
@@ -26,7 +25,7 @@ class TranslatorExtension extends \Twig_Extension
 
     public function translate($label, $default = null)
     {
-        return $this->em->getRepository('MaciTranslatorBundle:Language')->getTextFromLabel($label, $default);
+        return $this->tc->getText($label, $default);
     }
 
     public function getName()

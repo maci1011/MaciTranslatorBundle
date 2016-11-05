@@ -25,13 +25,14 @@ class LanguageType extends AbstractType
 			->add('translations', 'a2lix_translations', array(
                 'fields' => array(
                     'text' => array(
-                        'required' => false
+                        'required' => false,
+                        'attr' => array('class'=>'noeditor')
                     )
                 )
             ))
 			->add('label', 'hidden')
 			->add('reset', 'reset')
-			->add('send', 'submit')
+			->add('save', 'submit')
 		;
 	}
 
