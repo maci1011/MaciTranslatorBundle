@@ -2,15 +2,11 @@
 
 namespace Maci\TranslatorBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Language
  */
 class Language
 {
-    use \A2lix\I18nDoctrineBundle\Doctrine\ORM\Util\Translatable;
-
     /**
      * @var integer
      */
@@ -21,16 +17,15 @@ class Language
      */
     private $label;
 
-    protected $translations;
+    /**
+     * @var string
+     */
+    private $text;
 
     /**
-     * Constructor
+     * @var string
      */
-    public function __construct()
-    {
-        $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
+    private $locale;
 
     /**
      * Get id
@@ -40,6 +35,29 @@ class Language
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set text
+     *
+     * @param string $text
+     * @return LanguageTranslation
+     */
+    public function setText($text)
+    {
+        $this->text = $text;
+
+        return $this;
+    }
+
+    /**
+     * Get text
+     *
+     * @return string 
+     */
+    public function getText()
+    {
+        return $this->text;
     }
 
     /**
@@ -70,12 +88,16 @@ class Language
         return $this->label;
     }
 
-    /**
-     * getName
-     */
-    public function getText()
+    public function setLocale($locale)
     {
-        return $this->__call('text', null);
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    public function getLocale()
+    {
+        return $this->locale;
     }
 
     /**
@@ -83,6 +105,6 @@ class Language
      */
     public function __toString()
     {
-        return $this->label;
+        return ($this->label ? $this->label : '');
     }
 }

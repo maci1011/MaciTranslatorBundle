@@ -6,9 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 use Maci\TranslatorBundle\Entity\Language;
-use Maci\TranslatorBundle\Entity\LanguageTranslation;
 
 class TranslatorController extends Controller
 {
@@ -20,11 +20,12 @@ class TranslatorController extends Controller
 
     private $locales;
 
-	public function __construct(EntityManager $doctrine, SecurityContext $securityContext, $locales)
+	public function __construct(EntityManager $doctrine, SecurityContext $securityContext, RequestStack $requestStack, $locales)
 	{
     	$this->em = $doctrine;
 	    $this->sc = $securityContext;
 	    // $this->user = $securityContext->getToken()->getUser();
+        $this->request = $requestStack->getCurrentRequest();
         $this->locales = $locales;
     }
 
@@ -73,12 +74,13 @@ class TranslatorController extends Controller
         if (!strlen(trim($default))) {
             $default = null;
         }
-        foreach ($this->locales as $locale) {
-            $translation = new LanguageTranslation();
-            $translation->setText( $default );
-            $translation->setLocale( $locale );
-            $item->addTranslation($translation);
-        }
+        $item->setLocale($this->request->getLocale());
+        // foreach ($this->locales as $locale) {
+        //     $translation = new LanguageTranslation();
+        //     $translation->setText( $default );
+        //     $translation->setLocale( $locale );
+        //     $item->addTranslation($translation);
+        // }
         $this->em->persist($item);
         $this->em->flush();
     }

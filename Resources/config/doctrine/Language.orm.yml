@@ -12,3 +12,9 @@ Maci\TranslatorBundle\Entity\Language:
         label:
             type: string
             length: 63
+        text:
+            type: text
+            nullable: true
+        locale:
+            type: string
+            length: 10
