@@ -3,7 +3,7 @@ services:
 
     maci.translator:
         class: Maci\TranslatorBundle\Controller\TranslatorController
-        arguments: ["@doctrine.orm.entity_manager","@security.context","@request_stack","%locales%"]
+        arguments: ["@doctrine.orm.entity_manager","@request_stack","%locales%"]
 
     maci_translator.twig_extension:
         class: Maci\TranslatorBundle\Twig\TranslatorExtension
