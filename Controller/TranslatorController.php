@@ -62,20 +62,18 @@ class TranslatorController extends Controller
         return $this->om->getRepository('MaciTranslatorBundle:Language')->getTextFromLabel($label, $default);
     }
 
-    public function createItem($label, $default)
+    public function createItem($label, $default = null)
     {
         $item = new Language;
         $item->setLabel($label);
+
         if (!strlen(trim($default))) {
             $default = null;
         }
+
         $item->setLocale($this->request->getLocale());
-        // foreach ($this->locales as $locale) {
-        //     $translation = new LanguageTranslation();
-        //     $translation->setText( $default );
-        //     $translation->setLocale( $locale );
-        //     $item->addTranslation($translation);
-        // }
+        $item->setText( $default );
+
         $this->om->persist($item);
         $this->om->flush();
     }
