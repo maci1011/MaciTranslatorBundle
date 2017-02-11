@@ -11,9 +11,7 @@ class TranslatorController extends Controller
 {
 	private $om;
 
-	private $sc;
-
-	private $user;
+	private $request;
 
     private $locales;
 
@@ -35,10 +33,7 @@ class TranslatorController extends Controller
 
     public function getId($label)
     {
-        if ($this->sc->isGranted('ROLE_ADMIN')) {
-            return $this->om->getRepository('MaciTranslatorBundle:Language')->getIdFromLabel($label);
-        }
-        return false;
+        return $this->om->getRepository('MaciTranslatorBundle:Language')->getIdFromLabel($label);
     }
 
     public function getLabel($name, $default = null)
