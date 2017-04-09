@@ -15,20 +15,30 @@ class TranslatorController extends Controller
 
     private $locales;
 
+    private $loaded;
+
 	public function __construct(ObjectManager $objectManager, RequestStack $requestStack, $locales)
 	{
     	$this->om = $objectManager;
         $this->request = $requestStack->getCurrentRequest();
         $this->locales = $locales;
+
+        $this->loaded = array();
     }
 
     public function getText($label, $default = null)
     {
-        $item = $this->om->getRepository('MaciTranslatorBundle:Language')->findOneByLabel($label);
-        if (!$item) {
-            $this->createItem($label, $default);
+        if (array_key_exists($label, $this->loaded)) {
+            $item = $this->loaded[$label];
+        } else {
+            $item = $this->om->getRepository('MaciTranslatorBundle:Language')->findOneByLabel($label);
+            if (!$item) {
+                $item = $this->createItem($label, $default);
+            }
+            $this->loaded[$label] = $item;
         }
-        return $this->om->getRepository('MaciTranslatorBundle:Language')->getTextFromLabel($label, $default);
+
+        return $item->getText();
     }
 
     public function getId($label)
@@ -38,23 +48,22 @@ class TranslatorController extends Controller
 
     public function getLabel($name, $default = null)
     {
-        if (!strlen($name) || is_numeric($name)) {
+        if (is_numeric($name)) {
+            $name = 'label.' . $name;
+        }
+        if (!strlen($name)) {
             if (strlen($default)) {
                 $name = strtolower($default);
                 $name = str_replace(' ', '_', $name);
+                $name = substr($name,0,31);
             } else {
-                $name = 'label.' . rand(100000, 999999);
+                return '';
             }
         } elseif (strpos('[', $name)) {
             $name = str_replace('[', '.', $name);
             $name = str_replace(']', '', $name);
         }
-        $label = 'form.' . $name;
-        $item = $this->om->getRepository('MaciTranslatorBundle:Language')->findOneByLabel($label);
-        if (!$item) {
-            $this->createItem($label, $default);
-        }
-        return $this->om->getRepository('MaciTranslatorBundle:Language')->getTextFromLabel($label, $default);
+        return $this->getText(('form.'.$name), $default);
     }
 
     public function createItem($label, $default = null)
@@ -71,6 +80,8 @@ class TranslatorController extends Controller
 
         $this->om->persist($item);
         $this->om->flush();
+
+        return $item;
     }
 
     public function getLocales()
