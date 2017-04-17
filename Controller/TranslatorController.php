@@ -17,6 +17,8 @@ class TranslatorController extends Controller
 
     private $loaded;
 
+    private $ids;
+
 	public function __construct(ObjectManager $objectManager, RequestStack $requestStack, $locales)
 	{
     	$this->om = $objectManager;
@@ -24,26 +26,25 @@ class TranslatorController extends Controller
         $this->locales = $locales;
 
         $this->loaded = array();
-    }
+        $this->ids = array();
 
-    public function getText($label, $default = null)
-    {
-        if (array_key_exists($label, $this->loaded)) {
-            $item = $this->loaded[$label];
-        } else {
-            $item = $this->om->getRepository('MaciTranslatorBundle:Language')->findOneByLabel($label);
-            if (!$item) {
-                $item = $this->createItem($label, $default);
-            }
-            $this->loaded[$label] = $item;
+        $list = $this->om->getRepository('MaciTranslatorBundle:Language')->findBy(array(
+            'locale' => $this->request->getLocale()
+        ));
+
+        foreach ($list as $item) {
+            $this->loaded[$item->getLabel()] = $item->getText();
+            $this->ids[$item->getLabel()] = $item->getId();
         }
-
-        return $item->getText();
     }
 
     public function getId($label)
     {
-        return $this->om->getRepository('MaciTranslatorBundle:Language')->getIdFromLabel($label);
+        if (!array_key_exists($label, $this->ids)) {
+            return 0;
+        }
+
+        return $this->ids[$label];
     }
 
     public function getLabel($name, $default = null)
@@ -64,6 +65,17 @@ class TranslatorController extends Controller
             $name = str_replace(']', '', $name);
         }
         return $this->getText(('form.'.$name), $default);
+    }
+
+    public function getText($label, $default = null)
+    {
+        if (!array_key_exists($label, $this->loaded)) {
+            $item = $this->createItem($label, $default);
+            $this->loaded[$label] = $item->getText();
+            $this->ids[$label] = $item->getId();
+        }
+
+        return $this->loaded[$label];
     }
 
     public function createItem($label, $default = null)
