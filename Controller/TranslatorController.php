@@ -25,8 +25,31 @@ class TranslatorController extends Controller
         $this->request = $requestStack->getCurrentRequest();
         $this->locales = $locales;
 
-        $this->loaded = array();
+        $this->loaded = false;
         $this->ids = array();
+    }
+
+    public function createItem($label, $default = null)
+    {
+        $item = new Language;
+        $item->setLabel($label);
+
+        if (!strlen(trim($default))) {
+            $default = null;
+        }
+
+        $item->setLocale($this->request->getLocale());
+        $item->setText( $default );
+
+        $this->om->persist($item);
+        $this->om->flush();
+
+        return $item;
+    }
+
+    public function load()
+    {
+        if ($this->loaded) return;
 
         $list = $this->om->getRepository('MaciTranslatorBundle:Language')->findBy(array(
             'locale' => $this->request->getLocale()
@@ -67,8 +90,15 @@ class TranslatorController extends Controller
         return $this->getText(('form.'.$name), $default);
     }
 
+    public function getLocales()
+    {
+        return $this->locales;
+    }
+
     public function getText($label, $default = null)
     {
+        $this->load();
+
         if (!array_key_exists($label, $this->loaded)) {
             $item = $this->createItem($label, $default);
             $this->loaded[$label] = $item->getText();
@@ -76,28 +106,5 @@ class TranslatorController extends Controller
         }
 
         return $this->loaded[$label];
-    }
-
-    public function createItem($label, $default = null)
-    {
-        $item = new Language;
-        $item->setLabel($label);
-
-        if (!strlen(trim($default))) {
-            $default = null;
-        }
-
-        $item->setLocale($this->request->getLocale());
-        $item->setText( $default );
-
-        $this->om->persist($item);
-        $this->om->flush();
-
-        return $item;
-    }
-
-    public function getLocales()
-    {
-        return $this->locales;
     }
 }
