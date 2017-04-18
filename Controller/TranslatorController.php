@@ -49,7 +49,9 @@ class TranslatorController extends Controller
 
     public function load()
     {
-        if ($this->loaded) return;
+        if (is_array($this->loaded)) return;
+
+        $this->loaded = array();
 
         $list = $this->om->getRepository('MaciTranslatorBundle:Language')->findBy(array(
             'locale' => $this->request->getLocale()
