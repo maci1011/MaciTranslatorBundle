@@ -97,6 +97,11 @@ class TranslatorController extends Controller
         return $this->locales;
     }
 
+    public function getCurrentLocale()
+    {
+        return $this->request->getLocale();
+    }
+
     public function getText($label, $default = null)
     {
         $this->load();
