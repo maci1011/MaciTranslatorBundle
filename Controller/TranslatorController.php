@@ -25,7 +25,7 @@ class TranslatorController extends Controller
 	{
     	$this->om = $objectManager;
         $this->request = $requestStack->getCurrentRequest();
-        $this->locale = $this->request->getLocale();
+        $this->locale = $this->request ? $this->request->getLocale() : $locales[0];
         $this->locales = $locales;
 
         $this->loaded = false;
@@ -57,7 +57,7 @@ class TranslatorController extends Controller
 
     public function getCurrentLocale()
     {
-        return $this->request->getLocale();
+        return $this->locale;
     }
 
     public function load()
