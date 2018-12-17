@@ -19,13 +19,37 @@ class TranslatorExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('matra', array($this, 'translate')),
+            new \Twig_SimpleFilter('matra', array($this, 'getText')),
+            new \Twig_SimpleFilter('matit', array($this, 'getItem')),
+            new \Twig_SimpleFilter('matla', array($this, 'getLabel')),
+            new \Twig_SimpleFilter('matme', array($this, 'getMenu')),
+            new \Twig_SimpleFilter('matro', array($this, 'getRoute'))
         );
     }
 
-    public function translate($label, $default = null)
+    public function getLabel($label, $default = null)
+    {
+        return $this->tc->getLabel($label, $default);
+    }
+
+    public function getMenu($label, $default = null)
+    {
+        return $this->tc->getMenu($label, $default);
+    }
+
+    public function getText($label, $default = null)
     {
         return $this->tc->getText($label, $default);
+    }
+
+    public function getRoute($label, $default = null)
+    {
+        return $this->tc->getRoute($label, $default);
+    }
+
+    public function getItem($label, $default = null)
+    {
+        return $this->tc->getItem($label, $default);
     }
 
     public function getName()

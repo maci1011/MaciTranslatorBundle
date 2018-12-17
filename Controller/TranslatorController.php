@@ -13,6 +13,8 @@ class TranslatorController extends Controller
 
 	private $request;
 
+    private $locale;
+
     private $locales;
 
     private $loaded;
@@ -23,6 +25,7 @@ class TranslatorController extends Controller
 	{
     	$this->om = $objectManager;
         $this->request = $requestStack->getCurrentRequest();
+        $this->locale = $this->request->getLocale();
         $this->locales = $locales;
 
         $this->loaded = false;
@@ -38,13 +41,23 @@ class TranslatorController extends Controller
             $default = null;
         }
 
-        $item->setLocale($this->request->getLocale());
+        $item->setLocale($this->locale);
         $item->setText( $default );
 
         $this->om->persist($item);
         $this->om->flush();
 
         return $item;
+    }
+
+    public function getLocales()
+    {
+        return $this->locales;
+    }
+
+    public function getCurrentLocale()
+    {
+        return $this->request->getLocale();
     }
 
     public function load()
@@ -74,44 +87,48 @@ class TranslatorController extends Controller
 
     public function getLabel($name, $default = null)
     {
-        if (is_numeric($name)) {
-            $name = 'label.' . $name;
-        }
         if (!strlen($name)) {
             if (strlen($default)) {
-                $name = strtolower($default);
-                $name = str_replace(' ', '_', $name);
-                $name = substr($name,0,31);
+                $str = strtolower($default);
+                $str = str_replace(' ', '_', $str);
+                return ucfirst($str);
             } else {
                 return '';
             }
+        } elseif (is_numeric($name)) {
+            $name = 'label.ID_' . $name;
         } elseif (strpos('[', $name)) {
             $name = str_replace('[', '.', $name);
             $name = str_replace(']', '', $name);
         }
-        return $this->getText(('form.'.$name), $default);
+        return $this->getItem(('label.'.$name), $default);
     }
 
-    public function getLocales()
+    public function getMenu($name, $default = null)
     {
-        return $this->locales;
+        return $this->getItem(('menu.'.$name), $default);
     }
 
-    public function getCurrentLocale()
+    public function getText($name, $default = null)
     {
-        return $this->request->getLocale();
+        return $this->getItem(('text.'.$name), $default);
     }
 
-    public function getText($label, $default = null)
+    public function getRoute($name, $default = null)
+    {
+        return $this->getItem(('routes.'.$name), $default);
+    }
+
+    public function getItem($name, $default = null)
     {
         $this->load();
 
-        if (!array_key_exists($label, $this->loaded)) {
-            $item = $this->createItem($label, $default);
-            $this->loaded[$label] = $item->getText();
-            $this->ids[$label] = $item->getId();
+        if (!array_key_exists($name, $this->loaded)) {
+            $item = $this->createItem($name, $default);
+            $this->loaded[$name] = $item->getText();
+            $this->ids[$name] = $item->getId();
         }
 
-        return $this->loaded[$label];
+        return $this->loaded[$name];
     }
 }
