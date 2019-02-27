@@ -3,10 +3,10 @@ services:
 
     Maci\TranslatorBundle\Controller\TranslatorController:
         arguments: ["@doctrine.orm.entity_manager","@request_stack","%locales%"]
-        public: true
 
     maci.translator:
         alias: Maci\TranslatorBundle\Controller\TranslatorController
+        public: true
     
     maci_translator.twig_extension:
         class: Maci\TranslatorBundle\Twig\TranslatorExtension
