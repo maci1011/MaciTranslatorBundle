@@ -147,8 +147,9 @@ class TranslatorController extends Controller
     {
         $this->loadOptions();
 
+        $name = 'options.'.$name;
         if (!array_key_exists($name, $this->options)) {
-            $item = $this->createItem('options.'.$name, $default, true);
+            $item = $this->createItem($name, $default, true);
             $this->options[$name] = $item->getText();
         }
 

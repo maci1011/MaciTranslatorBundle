@@ -22,15 +22,3 @@ services:
         arguments: ["@maci.translator"]
         tags:
             - { name: twig.extension }
-
-    maci_translator_id.twig_extension:
-        class: Maci\TranslatorBundle\Twig\TranslatorIdExtension
-        arguments: ["@maci.translator"]
-        tags:
-            - { name: twig.extension }
-
-    maci_translator_label.twig_extension:
-        class: Maci\TranslatorBundle\Twig\TranslatorLabelExtension
-        arguments: ["@maci.translator"]
-        tags:
-            - { name: twig.extension }
