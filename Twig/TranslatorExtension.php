@@ -23,7 +23,8 @@ class TranslatorExtension extends \Twig_Extension
             new \Twig_SimpleFilter('matit', array($this, 'getItem')),
             new \Twig_SimpleFilter('matla', array($this, 'getLabel')),
             new \Twig_SimpleFilter('matme', array($this, 'getMenu')),
-            new \Twig_SimpleFilter('matro', array($this, 'getRoute'))
+            new \Twig_SimpleFilter('matro', array($this, 'getRoute')),
+            new \Twig_SimpleFilter('matop', array($this, 'getOption'))
         );
     }
 
@@ -50,6 +51,11 @@ class TranslatorExtension extends \Twig_Extension
     public function getItem($label, $default = null)
     {
         return $this->tc->getItem($label, $default);
+    }
+
+    public function getOption($label, $default = null)
+    {
+        return $this->tc->getOption($label, $default);
     }
 
     public function getName()

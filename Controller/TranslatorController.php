@@ -19,6 +19,8 @@ class TranslatorController extends Controller
 
     private $loaded;
 
+    private $options;
+
     private $ids;
 
 	public function __construct(ObjectManager $objectManager, RequestStack $requestStack, $locales)
@@ -29,20 +31,26 @@ class TranslatorController extends Controller
         $this->locales = $locales;
 
         $this->loaded = false;
+        $this->options = false;
         $this->ids = array();
     }
 
-    public function createItem($label, $default = null)
+    public function createItem($label, $text, $option = false)
     {
         $item = new Language;
         $item->setLabel($label);
 
-        if (!strlen(trim($default))) {
-            $default = null;
+        if (!strlen(trim($text))) {
+            $text = null;
         }
 
-        $item->setLocale($this->locale);
-        $item->setText( $default );
+        if ($option) {
+            $item->setLocale('option');
+        } else {
+            $item->setLocale($this->locale);
+        }
+
+        $item->setText($text);
 
         $this->om->persist($item);
         $this->om->flush();
@@ -72,6 +80,22 @@ class TranslatorController extends Controller
 
         foreach ($list as $item) {
             $this->loaded[$item->getLabel()] = $item->getText();
+            $this->ids[$item->getLabel()] = $item->getId();
+        }
+    }
+
+    public function loadOptions()
+    {
+        if (is_array($this->options)) return;
+
+        $this->options = array();
+
+        $list = $this->om->getRepository('MaciTranslatorBundle:Language')->findBy(array(
+            'locale' => 'option'
+        ));
+
+        foreach ($list as $item) {
+            $this->options[$item->getLabel()] = $item->getText();
             $this->ids[$item->getLabel()] = $item->getId();
         }
     }
@@ -117,6 +141,18 @@ class TranslatorController extends Controller
     public function getRoute($name, $default = null)
     {
         return $this->getItem(('routes.'.$name), $default);
+    }
+
+    public function getOption($name, $default = null)
+    {
+        $this->loadOptions();
+
+        if (!array_key_exists($name, $this->options)) {
+            $item = $this->createItem('options.'.$name, $default, true);
+            $this->options[$name] = $item->getText();
+        }
+
+        return $this->options[$name];
     }
 
     public function getItem($name, $default = null)
