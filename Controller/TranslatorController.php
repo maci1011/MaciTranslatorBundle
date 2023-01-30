@@ -58,6 +58,11 @@ class TranslatorController extends Controller
 		return $item;
 	}
 
+	public function getLocale()
+	{
+		return $this->locale;
+	}
+
 	public function getLocales()
 	{
 		return $this->locales;
