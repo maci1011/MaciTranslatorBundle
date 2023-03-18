@@ -8,13 +8,6 @@ services:
         alias: Maci\TranslatorBundle\Controller\TranslatorController
         public: true
 
-    # Form
-
-    maci_translator.form.type.language:
-        class: Maci\TranslatorBundle\Form\Type\LanguageType
-        tags:
-            - { name: form.type, alias: language }
-
     # Twig
     
     maci_translator.twig_extension:

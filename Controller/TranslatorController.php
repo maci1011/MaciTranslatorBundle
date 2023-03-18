@@ -91,15 +91,17 @@ class TranslatorController extends Controller
 
 	public function loadOptions()
 	{
-		if (is_array($this->options)) return;
+		if (is_array($this->options))
+			return;
 
-		$this->options = array();
+		$this->options = [];
 
-		$list = $this->om->getRepository('MaciTranslatorBundle:Language')->findBy(array(
+		$list = $this->om->getRepository('MaciTranslatorBundle:Language')->findBy([
 			'locale' => 'option'
-		));
+		]);
 
-		foreach ($list as $item) {
+		foreach ($list as $item)
+		{
 			$this->options[$item->getLabel()] = $item->getText();
 			$this->ids[$item->getLabel()] = $item->getId();
 		}
@@ -116,7 +118,8 @@ class TranslatorController extends Controller
 
 	public function getLabel($name, $default = null)
 	{
-		if (!strlen($name)) {
+		if (!strlen($name))
+		{
 			if (strlen($default)) {
 				$str = strtolower($default);
 				$str = str_replace(' ', '_', $str);
@@ -124,9 +127,11 @@ class TranslatorController extends Controller
 			} else {
 				return '';
 			}
-		} elseif (is_numeric($name)) {
+		}
+		elseif (is_numeric($name))
 			$name = 'label.ID_' . $name;
-		} elseif (strpos('[', $name)) {
+		elseif (strpos('[', $name))
+		{
 			$name = str_replace('[', '.', $name);
 			$name = str_replace(']', '', $name);
 		}
